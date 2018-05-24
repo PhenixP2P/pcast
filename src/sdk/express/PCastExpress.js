@@ -101,6 +101,14 @@ define([
         this._reauthCount = 0;
     };
 
+    PCastExpress.prototype.getAuthToken = function getAuthToken() {
+        return this._authToken;
+    };
+
+    PCastExpress.prototype.setAuthToken = function setAuthToken(authToken) {
+        this._authToken = authToken;
+    };
+
     PCastExpress.prototype.getPCast = function getPCast() {
         return this._pcastObservable.getValue();
     };
