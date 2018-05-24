@@ -19,6 +19,7 @@ define('phenix-web-sdk', [
     'phenix-rtc',
     'phenix-web-logging',
     './sdk/PCast',
+    './sdk/AdminAPI',
     './sdk/room/RoomService',
     './sdk/audio/AudioSpeakerDetector',
     './sdk/bandwidth/BandwidthMonitor',
@@ -31,6 +32,7 @@ define('phenix-web-sdk', [
 
     return {
         PCast: PCast,
+        AdminAPI: AdminAPI,
         RoomService: RoomService,
         AudioSpeakerDetector: AudioSpeakerDetector,
         BandwidthMonitor: BandwidthMonitor,
