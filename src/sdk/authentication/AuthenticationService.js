@@ -44,11 +44,11 @@ define([
 
     AuthenticationService.prototype.assertAuthorized = function assertAuthorized() {
         if (!validPCastStatus(this.getPCastStatus())) {
-            throw new Error('Unable to perform action. Status [%s]. Please wait to reconnect.', this.getPCastStatus());
+            throw new Error('Unable to perform action. Status [' + this.getPCastStatus() + ']. Please wait to reconnect.');
         }
 
         if (!validPCastSessionId(this.getPCastSessionId())) {
-            throw new Error('Unable to perform action. Invalid sessionId [%s]', this.getPCastSessionId());
+            throw new Error('Unable to perform action. Invalid sessionId [' + this.getPCastSessionId() + ']');
         }
     };
 
