@@ -37,8 +37,13 @@ define([
 
     function PCastExpress(options) {
         assert.isObject(options, 'options');
-        assert.isStringNotEmpty(options.backendUri, 'options.backendUri');
-        assert.isObject(options.authenticationData, 'options.authenticationData');
+
+        if (options.adminApi) {
+            assert.isObject(options.adminApi, 'options.adminApi');
+        } else {
+            assert.isStringNotEmpty(options.backendUri, 'options.backendUri');
+            assert.isObject(options.authenticationData, 'options.authenticationData');
+        }
 
         if (options.authToken) {
             assert.isStringNotEmpty(options.authToken, 'options.authToken');
@@ -65,7 +70,7 @@ define([
         this._pcastObservable = new observable.Observable(null).extend({rateLimit: 0});
         this._subscribers = {};
         this._publishers = {};
-        this._adminAPI = new AdminAPI(options.backendUri, options.authenticationData);
+        this._adminAPI = options.adminApi || new AdminAPI(options.backendUri, options.authenticationData);
         this._isInstantiated = false;
         this._reauthCount = 0;
         this._reconnectCount = 0;
@@ -102,6 +107,14 @@ define([
         this._reauthCount = 0;
 
         this._logger.info('Disposed PCast Express Instance');
+    };
+
+    PCastExpress.prototype.getAuthToken = function getAuthToken() {
+        return this._authToken;
+    };
+
+    PCastExpress.prototype.setAuthToken = function setAuthToken(authToken) {
+        this._authToken = authToken;
     };
 
     PCastExpress.prototype.getPCast = function getPCast() {

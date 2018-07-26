@@ -46,6 +46,14 @@ define([
         return this._disposables.dispose();
     };
 
+    AdminAPI.prototype.getAuthenticationData = function getAuthenticationData() {
+        return this._authenticationData;
+    };
+
+    AdminAPI.prototype.setAuthenticationData = function setAuthenticationData(authenticationData) {
+        this._authenticationData = authenticationData;
+    };
+
     AdminAPI.prototype.createAuthenticationToken = function createAuthenticationToken(callback) {
         var data = appendAuthDataTo.call(this, {});
         var requestWithoutCallback = _.bind(http.postWithRetry, http, this._backendUri + '/auth', JSON.stringify(data), defaultRequestOptions);

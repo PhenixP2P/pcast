@@ -38,9 +38,6 @@ define([
 
         if (options.pcastExpress) {
             assert.isObject(options.pcastExpress, 'options.pcastExpress');
-        } else {
-            assert.isStringNotEmpty(options.backendUri, 'options.backendUri');
-            assert.isObject(options.authenticationData, 'options.authenticationData');
         }
 
         this._pcastExpress = options.pcastExpress || new PCastExpress(options);
