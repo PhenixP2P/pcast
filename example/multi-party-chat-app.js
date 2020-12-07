@@ -408,6 +408,20 @@ requirejs([
                     memberStream: memberStream
                 });
 
+                function onPrivacyChange() {
+                    var muted = (memberStream.getObservableAudioState().getValue() !== 'TrackEnabled')
+                        || (memberStream.getObservableVideoState().getValue() !== 'TrackEnabled');
+
+                    if (muted) {
+                        videoElement.classList.add('muted');
+                    } else {
+                        videoElement.classList.remove('muted');
+                    }
+                }
+
+                memberStream.getObservableVideoState().subscribe(onPrivacyChange);
+                memberStream.getObservableAudioState().subscribe(onPrivacyChange);
+
                 videoList.append(videoElement);
 
                 if (removed) {
@@ -630,4 +644,3 @@ requirejs([
         init();
     });
 });
-
