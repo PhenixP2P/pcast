@@ -65,6 +65,10 @@ requirejs([
 ], function($, _, sdk, Player, app) {
     var publishAndJoinRoomButton = document.getElementById('publishAndJoinRoomButton');
     var stopButton = document.getElementById('stopButton');
+    var muteAudio = false;
+    var muteVideo = false;
+    var muteAudioButton = document.getElementById('muteAudio');
+    var muteVideoButton = document.getElementById('muteVideo');
     var publishScreenShareButton = document.getElementById('publishScreenButton');
     var stopScreenShareButton = document.getElementById('stopPublishScreenButton');
     var videoList = document.getElementById('videoList');
@@ -404,6 +408,20 @@ requirejs([
                     memberStream: memberStream
                 });
 
+                function onPrivacyChange() {
+                    var muted = (memberStream.getObservableAudioState().getValue() !== 'TrackEnabled')
+                        || (memberStream.getObservableVideoState().getValue() !== 'TrackEnabled');
+
+                    if (muted) {
+                        videoElement.classList.add('muted');
+                    } else {
+                        videoElement.classList.remove('muted');
+                    }
+                }
+
+                memberStream.getObservableVideoState().subscribe(onPrivacyChange);
+                memberStream.getObservableAudioState().subscribe(onPrivacyChange);
+
                 videoList.append(videoElement);
 
                 if (removed) {
@@ -514,6 +532,8 @@ requirejs([
 
         publishAndJoinRoomButton.onclick = publishVideoAndCameraAtTwoQualitiesAndJoinRoom;
         stopButton.onclick = leaveRoomAndStopPublisher;
+        muteAudioButton.onclick = onMuteAudioClick;
+        muteVideoButton.onclick = onMuteVideoClick;
         publishScreenShareButton.onclick = publishScreen;
         stopScreenShareButton.onclick = stopPublishScreen;
 
@@ -523,6 +543,36 @@ requirejs([
 
         createRoomExpress();
     };
+
+    function onMuteAudioClick() {
+        muteAudio = !muteAudio;
+        muteAudioButton.textContent = muteAudio
+            ? 'Unmute Audio'
+            : 'Mute Audio';
+
+        if (publisher) {
+            if (muteAudio) {
+                publisher.disableAudio();
+            } else {
+                publisher.enableAudio();
+            }
+        }
+    }
+
+    function onMuteVideoClick() {
+        muteVideo = !muteVideo;
+        muteVideoButton.textContent = muteVideo
+            ? 'Unmute Video'
+            : 'Mute Video';
+
+        if (publisher) {
+            if (muteVideo) {
+                publisher.disableVideo();
+            } else {
+                publisher.enableVideo();
+            }
+        }
+    }
 
     function leaveRoomAndStopPublisher() {
         if (publisher) {
